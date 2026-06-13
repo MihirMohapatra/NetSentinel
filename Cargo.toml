@@ -9,7 +9,7 @@ members = [
     "crates/pipeline",
     "crates/dns-security",
     "crates/plugins",
-    "apps/desktop/src-tauri",
+    "apps/desktop/src-tauri", "apps/cli",
 ]
 default-members = ["crates/packet-engine"]
 

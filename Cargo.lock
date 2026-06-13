@@ -2634,6 +2634,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "netsentinel-cli"
+version = "0.1.0"
+dependencies = [
+ "ai-engine",
+ "anyhow",
+ "chrono",
+ "dns-security",
+ "packet-engine",
+ "serde_json",
+ "threat-engine",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "netsentinel-desktop"
 version = "0.1.0"
 dependencies = [

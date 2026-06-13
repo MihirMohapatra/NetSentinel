@@ -1,0 +1,17 @@
+[package]
+name = "netsentinel-cli"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { workspace = true, features = ["full"] }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+anyhow = { workspace = true }
+chrono = { workspace = true }
+serde_json = { workspace = true }
+
+packet-engine = { path = "../../crates/packet-engine" }
+threat-engine = { path = "../../crates/threat-engine" }
+ai-engine = { path = "../../crates/ai-engine" }
+dns-security = { path = "../../crates/dns-security" }
