@@ -1,3 +1,21 @@
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f172a,100:16a34a&height=220&section=header&text=NetSentinel&fontColor=ffffff&fontSize=48&fontAlignY=40&desc=Rust%20Network%20Security%20Monitor&descAlignY=60" alt="NetSentinel banner" />
+</p>
+
+<p align="center">
+  <a href="https://www.rust-lang.org/">
+    <img src="https://img.shields.io/badge/Rust-Workspace-black?style=for-the-badge&logo=rust" alt="Rust Workspace" />
+  </a>
+  <a href="https://tauri.app/">
+    <img src="https://img.shields.io/badge/Tauri-Desktop_App-24C8DB?style=for-the-badge&logo=tauri&logoColor=white" alt="Tauri Desktop App" />
+  </a>
+  <a href="https://tokio.rs/">
+    <img src="https://img.shields.io/badge/Tokio-Async_Runtime-EF4444?style=for-the-badge" alt="Tokio Async Runtime" />
+  </a>
+  <img src="https://img.shields.io/badge/Platform-Windows-2563EB?style=for-the-badge&logo=windows&logoColor=white" alt="Windows" />
+  <img src="https://img.shields.io/badge/Status-Active_Development-F59E0B?style=for-the-badge" alt="Active Development" />
+</p>
+
 # NetSentinel
 
 NetSentinel is a Rust-based network security monitoring project with a desktop interface built on Tauri. The repository combines packet capture, threat analysis, DNS monitoring, storage, and an early desktop dashboard into a single workspace.
