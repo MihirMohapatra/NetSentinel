@@ -17,6 +17,7 @@ tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 chrono = { workspace = true }
 uuid = { workspace = true }
+parking_lot = { workspace = true }
 
 packet-engine = { path = "../../../crates/packet-engine" }
 threat-engine = { path = "../../../crates/threat-engine" }
