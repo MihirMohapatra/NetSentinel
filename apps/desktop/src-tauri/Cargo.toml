@@ -1,0 +1,32 @@
+[package]
+name = "netsentinel-desktop"
+version = "0.1.0"
+edition = "2024"
+
+[build-dependencies]
+tauri-build = "2"
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-shell = "2"
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+
+packet-engine = { path = "../../../crates/packet-engine" }
+threat-engine = { path = "../../../crates/threat-engine" }
+process-monitor = { path = "../../../crates/process-monitor" }
+storage = { path = "../../../crates/storage" }
+ai-engine = { path = "../../../crates/ai-engine" }
+pipeline = { path = "../../../crates/pipeline" }
+dns-security = { path = "../../../crates/dns-security" }
+plugins = { path = "../../../crates/plugins" }
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]

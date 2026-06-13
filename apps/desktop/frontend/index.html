@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NetSentinel</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="logo">🛡 NetSentinel</div>
+    <ul class="nav-links">
+      <li><a href="#" data-page="dashboard" class="active">Dashboard</a></li>
+      <li><a href="#" data-page="network">Network View</a></li>
+      <li><a href="#" data-page="alerts">Alerts</a></li>
+    </ul>
+  </nav>
+  <main id="content">
+    <div id="page-container"></div>
+  </main>
+  <script src="app.js"></script>
+  <script src="pages/dashboard.js"></script>
+  <script src="pages/network.js"></script>
+  <script src="pages/alerts.js"></script>
+</body>
+</html>
