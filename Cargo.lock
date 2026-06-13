@@ -393,6 +393,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "dns-security"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "packet-engine",
+ "parking_lot",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+ "threat-engine",
+ "tokio",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
 name = "dotenvy"
 version = "0.15.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1600,6 +1617,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a89322df9ebe1c1578d689c92318e070967d1042b512afbe49518723f4e6d5cd"
 
 [[package]]
+name = "pipeline"
+version = "0.1.0"
+dependencies = [
+ "ai-engine",
+ "anyhow",
+ "packet-engine",
+ "serde",
+ "serde_json",
+ "storage",
+ "thiserror 2.0.18",
+ "threat-engine",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "pkcs1"
 version = "0.7.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1631,6 +1664,21 @@ name = "plain"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b4596b6d070b27117e987119b4dac604f3c58cfb0b191112e24771b2faeac1a6"
+
+[[package]]
+name = "plugins"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "packet-engine",
+ "parking_lot",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+ "threat-engine",
+ "tokio",
+ "tracing",
+]
 
 [[package]]
 name = "pnet"

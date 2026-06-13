@@ -6,6 +6,9 @@ members = [
     "crates/process-monitor",
     "crates/storage",
     "crates/ai-engine",
+    "crates/pipeline",
+    "crates/dns-security",
+    "crates/plugins",
 ]
 default-members = ["crates/packet-engine"]
 

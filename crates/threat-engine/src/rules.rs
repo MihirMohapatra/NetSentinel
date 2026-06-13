@@ -12,6 +12,8 @@ impl RuleEngine {
             Box::new(SuspiciousPortRule),
             Box::new(PrivateIpEgressRule),
             Box::new(HighPortTrafficRule),
+            Box::new(UnknownProcessRule),
+            Box::new(DnsQueryRule),
         ];
 
         Self { rules }
@@ -38,6 +40,8 @@ pub trait DetectionRule: Send + Sync {
     fn evaluate(&self, event: &NetworkEvent) -> Option<RuleMatch>;
 }
 
+// --- Suspicious Port Rule ---
+
 pub struct SuspiciousPortRule;
 
 impl DetectionRule for SuspiciousPortRule {
@@ -59,6 +63,8 @@ impl DetectionRule for SuspiciousPortRule {
     }
 }
 
+// --- Private IP Egress Rule ---
+
 pub struct PrivateIpEgressRule;
 
 impl DetectionRule for PrivateIpEgressRule {
@@ -69,9 +75,7 @@ impl DetectionRule for PrivateIpEgressRule {
     fn evaluate(&self, event: &NetworkEvent) -> Option<RuleMatch> {
         let is_private = |ip: IpAddr| -> bool {
             match ip {
-                IpAddr::V4(v4) => {
-                    v4.is_private() || v4.is_loopback() || v4.is_link_local()
-                }
+                IpAddr::V4(v4) => v4.is_private() || v4.is_loopback() || v4.is_link_local(),
                 IpAddr::V6(v6) => v6.is_loopback() || v6.is_unicast_link_local(),
             }
         };
@@ -92,6 +96,8 @@ impl DetectionRule for PrivateIpEgressRule {
     }
 }
 
+// --- High Port Traffic Rule ---
+
 pub struct HighPortTrafficRule;
 
 impl DetectionRule for HighPortTrafficRule {
@@ -102,8 +108,7 @@ impl DetectionRule for HighPortTrafficRule {
     fn evaluate(&self, event: &NetworkEvent) -> Option<RuleMatch> {
         let is_ephemeral = |port: u16| port >= 49152;
 
-        if is_ephemeral(event.source_port) && is_ephemeral(event.destination_port)
-        {
+        if is_ephemeral(event.source_port) && is_ephemeral(event.destination_port) {
             Some(RuleMatch {
                 rule_name: self.name().to_string(),
                 severity: AlertSeverity::Low,
@@ -116,6 +121,54 @@ impl DetectionRule for HighPortTrafficRule {
         }
     }
 }
+
+// --- Unknown Process Rule ---
+
+pub struct UnknownProcessRule;
+
+impl DetectionRule for UnknownProcessRule {
+    fn name(&self) -> &str {
+        "Unknown Process"
+    }
+
+    fn evaluate(&self, event: &NetworkEvent) -> Option<RuleMatch> {
+        if event.process_name.is_none() {
+            Some(RuleMatch {
+                rule_name: self.name().to_string(),
+                severity: AlertSeverity::Medium,
+                description: format!("Connection from unknown process: {} -> {}:{}",
+                    event.source_ip, event.destination_ip, event.destination_port),
+            })
+        } else {
+            None
+        }
+    }
+}
+
+// --- DNS Query Rule ---
+
+pub struct DnsQueryRule;
+
+impl DetectionRule for DnsQueryRule {
+    fn name(&self) -> &str {
+        "DNS Query"
+    }
+
+    fn evaluate(&self, event: &NetworkEvent) -> Option<RuleMatch> {
+        if event.destination_port == 53 || event.source_port == 53 {
+            Some(RuleMatch {
+                rule_name: self.name().to_string(),
+                severity: AlertSeverity::Low,
+                description: format!("DNS query: {} -> {}",
+                    event.source_ip, event.destination_ip),
+            })
+        } else {
+            None
+        }
+    }
+}
+
+// --- Custom Rule ---
 
 pub struct CustomRule {
     name: String,

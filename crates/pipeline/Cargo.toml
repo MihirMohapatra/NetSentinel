@@ -1,0 +1,16 @@
+[package]
+name = "pipeline"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { workspace = true, features = ["full"] }
+tracing = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+packet-engine = { path = "../packet-engine" }
+threat-engine = { path = "../threat-engine" }
+storage = { path = "../storage" }
+ai-engine = { path = "../ai-engine" }
