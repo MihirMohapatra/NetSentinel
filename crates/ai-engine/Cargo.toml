@@ -1,0 +1,19 @@
+[package]
+name = "ai-engine"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+anyhow = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+parking_lot = { workspace = true }
+candle-core = { workspace = true }
+linfa = { workspace = true }
+smartcore = { workspace = true }
+packet-engine = { path = "../packet-engine" }
