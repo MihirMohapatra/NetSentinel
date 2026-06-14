@@ -19,6 +19,12 @@ impl WindowsProcessMonitor {
     }
 }
 
+impl Default for WindowsProcessMonitor {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ProcessMapper for WindowsProcessMonitor {
     fn find_process_for_connection(&self, event: &NetworkEvent) -> Result<Option<ProcessInfo>> {
         self.get_process_by_pid(event.process_id.unwrap_or(0))
@@ -36,7 +42,7 @@ impl WindowsProcessMonitor {
         }
         match self.system.process(Pid::from(pid as usize)) {
             Some(p) => Ok(Some(ProcessInfo {
-                pid: p.pid().as_u32() as u32,
+                pid: p.pid().as_u32(),
                 name: p.name().to_string_lossy().to_string(),
                 path: p.exe().map(|e| e.to_string_lossy().to_string()).unwrap_or_default(),
                 user: String::new(),

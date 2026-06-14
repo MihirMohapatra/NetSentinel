@@ -16,7 +16,7 @@ impl PacketCapture {
     pub fn new(interface: &str) -> Result<Self> {
         let device = Device::list()?
             .into_iter()
-            .find(|d| d.name == interface || d.desc.as_ref().map_or(false, |desc| desc == interface))
+            .find(|d| d.name == interface || d.desc.as_ref().is_some_and(|desc| desc == interface))
             .ok_or_else(|| anyhow::anyhow!("Interface not found: {}", interface))?;
 
         let cap = Capture::from_device(device)?
@@ -42,11 +42,11 @@ impl PacketCapture {
             loop {
                 match cap.next_packet() {
                     Ok(packet) => {
-                        if let Some(event) = parser.parse(packet.data) {
-                            if event_tx.send(event).is_err() {
-                                warn!("Event channel closed, stopping capture");
-                                break;
-                            }
+                        if let Some(event) = parser.parse(packet.data)
+                            && event_tx.send(event).is_err()
+                        {
+                            warn!("Event channel closed, stopping capture");
+                            break;
                         }
                     }
                     Err(e) => {

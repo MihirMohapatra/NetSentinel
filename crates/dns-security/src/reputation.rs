@@ -168,3 +168,9 @@ impl DomainReputation {
         entropy
     }
 }
+
+impl Default for DomainReputation {
+    fn default() -> Self {
+        Self::new()
+    }
+}

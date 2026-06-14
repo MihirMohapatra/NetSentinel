@@ -27,10 +27,10 @@ impl DnsMonitor {
             return;
         }
 
-        if let Some(process) = &event.process_name {
-            if process == "svchost.exe" || process == "systemd-resolve" || process == "dnscache" || process == "systemd" {
-                return;
-            }
+        if let Some(process) = &event.process_name
+            && (process == "svchost.exe" || process == "systemd-resolve" || process == "dnscache" || process == "systemd")
+        {
+            return;
         }
 
         let alert = Alert {

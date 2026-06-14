@@ -46,15 +46,12 @@ impl PluginRegistry {
         let mut alerts = Vec::new();
         let plugins = self.plugins.read();
         for plugin in plugins.iter() {
-            match plugin.analyze(event) {
-                Some(alert) => {
-                    info!("Plugin '{}' generated alert: {}", plugin.name(), alert.title);
-                    if self.alert_tx.send(alert.clone()).is_err() {
-                        warn!("Plugin alert channel closed");
-                    }
-                    alerts.push(alert);
+            if let Some(alert) = plugin.analyze(event) {
+                info!("Plugin '{}' generated alert: {}", plugin.name(), alert.title);
+                if self.alert_tx.send(alert.clone()).is_err() {
+                    warn!("Plugin alert channel closed");
                 }
-                None => {}
+                alerts.push(alert);
             }
         }
         alerts

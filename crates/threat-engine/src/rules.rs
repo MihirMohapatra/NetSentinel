@@ -28,6 +28,12 @@ impl RuleEngine {
     }
 }
 
+impl Default for RuleEngine {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct RuleMatch {
     pub rule_name: String,

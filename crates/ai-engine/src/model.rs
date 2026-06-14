@@ -138,6 +138,12 @@ impl BaselineModel {
     }
 }
 
+impl Default for BaselineModel {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl AnomalyModel for BaselineModel {
     fn predict(&self, features: &[f64]) -> AnomalyScore {
         let score = features.iter().sum::<f64>() / features.len() as f64;

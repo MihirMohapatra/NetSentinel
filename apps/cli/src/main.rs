@@ -83,7 +83,7 @@ async fn main() -> anyhow::Result<()> {
                 println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
             }
 
-            if event_count % 100 == 0 {
+            if event_count.is_multiple_of(100) {
                 let candidates = det.get_port_scan_candidates();
                 print!("\r  Events: {event_count} | Alerts: {alert_count} | Port scans tracked: {}", candidates.len());
                 io::stdout().flush().ok();

@@ -81,6 +81,12 @@ impl PacketParser {
     }
 }
 
+impl Default for PacketParser {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Clone for PacketParser {
     fn clone(&self) -> Self {
         Self {

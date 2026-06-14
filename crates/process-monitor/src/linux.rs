@@ -28,14 +28,12 @@ impl LinuxProcessMonitor {
 
             if let Some(local_addr) = parts.get(1) {
                 let addr_parts: Vec<&str> = local_addr.split(':').collect();
-                if let Some(port_hex) = addr_parts.get(1) {
-                    if let Ok(p) = u16::from_str_radix(port_hex, 16) {
-                        if p == port {
-                            if let Some(inode_str) = parts.get(9) {
-                                return inode_str.parse::<u32>().ok();
-                            }
-                        }
-                    }
+                if let Some(port_hex) = addr_parts.get(1)
+                    && let Ok(p) = u16::from_str_radix(port_hex, 16)
+                    && p == port
+                    && let Some(inode_str) = parts.get(9)
+                {
+                    return inode_str.parse::<u32>().ok();
                 }
             }
         }
@@ -44,30 +42,36 @@ impl LinuxProcessMonitor {
 
     fn find_process_by_inode(inode: u32) -> Option<(u32, String)> {
         let proc_dir = Path::new("/proc");
-        for entry in fs::read_dir(proc_dir).ok()? {
-            if let Ok(entry) = entry {
-                let pid_str = entry.file_name().to_string_lossy().to_string();
-                let pid: u32 = pid_str.parse().ok()?;
+        for entry in fs::read_dir(proc_dir).ok()?.flatten() {
+            let pid_str = entry.file_name().to_string_lossy().to_string();
+            let Ok(pid) = pid_str.parse::<u32>() else {
+                continue;
+            };
 
-                let fd_dir = entry.path().join("fd");
-                if let Ok(fd_entries) = fs::read_dir(fd_dir) {
-                    for fd_entry in fd_entries.flatten() {
-                        if let Ok(target) = fs::read_link(fd_entry.path()) {
-                            let target_str = target.to_string_lossy().to_string();
-                            if target_str.contains(&format!("socket:[{}]", inode)) {
-                                let cmdline_path = entry.path().join("cmdline");
-                                if let Ok(cmdline) = fs::read_to_string(cmdline_path) {
-                                    let name = cmdline.trim_matches('\0').to_string();
-                                    return Some((pid, name));
-                                }
-                                return Some((pid, format!("pid_{}", pid)));
+            let fd_dir = entry.path().join("fd");
+            if let Ok(fd_entries) = fs::read_dir(fd_dir) {
+                for fd_entry in fd_entries.flatten() {
+                    if let Ok(target) = fs::read_link(fd_entry.path()) {
+                        let target_str = target.to_string_lossy().to_string();
+                        if target_str.contains(&format!("socket:[{}]", inode)) {
+                            let cmdline_path = entry.path().join("cmdline");
+                            if let Ok(cmdline) = fs::read_to_string(cmdline_path) {
+                                let name = cmdline.trim_matches('\0').to_string();
+                                return Some((pid, name));
                             }
+                            return Some((pid, format!("pid_{}", pid)));
                         }
                     }
                 }
             }
         }
         None
+    }
+}
+
+impl Default for LinuxProcessMonitor {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -79,15 +83,15 @@ impl ProcessMapper for LinuxProcessMonitor {
             _ => return Ok(None),
         };
 
-        if let Some(inode) = Self::read_socket_inode(event.destination_port, protocol) {
-            if let Some((pid, name)) = Self::find_process_by_inode(inode) {
-                return Ok(Some(ProcessInfo {
-                    pid,
-                    name,
-                    path: format!("/proc/{}/exe", pid),
-                    user: String::new(),
-                }));
-            }
+        if let Some(inode) = Self::read_socket_inode(event.destination_port, protocol)
+            && let Some((pid, name)) = Self::find_process_by_inode(inode)
+        {
+            return Ok(Some(ProcessInfo {
+                pid,
+                name,
+                path: format!("/proc/{}/exe", pid),
+                user: String::new(),
+            }));
         }
 
         if let Some(pid) = event.process_id {

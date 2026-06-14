@@ -19,8 +19,7 @@ struct EventHistory {
 
 impl AnomalyDetector {
     pub fn new() -> Self {
-        let mut models: Vec<Box<dyn AnomalyModel>> = Vec::new();
-        models.push(Box::new(IsolationForestModel::new(0.6)));
+        let models: Vec<Box<dyn AnomalyModel>> = vec![Box::new(IsolationForestModel::new(0.6))];
 
         Self {
             models,
@@ -81,12 +80,12 @@ impl AnomalyDetector {
             let mut bl = self.baseline.write();
             bl.record_observation(process, bytes_per_sec, connections_per_min);
 
-            if let Some(baseline_score) = bl.anomaly_score(process, bytes_per_sec, connections_per_min) {
-                if baseline_score > 2.0 {
-                    overall_score.is_anomaly = true;
-                    overall_score.score = overall_score.score.max(baseline_score);
-                    overall_score.contributors.push("baseline_deviation".to_string());
-                }
+            if let Some(baseline_score) = bl.anomaly_score(process, bytes_per_sec, connections_per_min)
+                && baseline_score > 2.0
+            {
+                overall_score.is_anomaly = true;
+                overall_score.score = overall_score.score.max(baseline_score);
+                overall_score.contributors.push("baseline_deviation".to_string());
             }
         }
 
@@ -140,5 +139,11 @@ impl AnomalyDetector {
         } else {
             0.0
         }
+    }
+}
+
+impl Default for AnomalyDetector {
+    fn default() -> Self {
+        Self::new()
     }
 }
