@@ -20,6 +20,12 @@
 
 NetSentinel is a Rust-based network security monitoring project with a desktop interface built on Tauri. The repository combines packet capture, threat analysis, DNS monitoring, storage, and an early desktop dashboard into a single workspace.
 
+## Desktop Preview
+
+<p align="center">
+  <img src="docs/assets/desktop-view.png" alt="NetSentinel desktop dashboard" width="100%" />
+</p>
+
 ## Overview
 
 NetSentinel is designed to explore the building blocks of a lightweight endpoint and network visibility tool. The current codebase includes:
