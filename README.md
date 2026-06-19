@@ -165,4 +165,7 @@ Contributions, refactors, and design improvements are welcome. If you plan to ex
 
 ## License
 
-No license file is currently present in the repository. Add one before distributing the project broadly.
+This project is dual-licensed under either of the following, at your option:
+
+- [MIT License](LICENSE-MIT)
+- [Apache License 2.0](LICENSE-APACHE)
