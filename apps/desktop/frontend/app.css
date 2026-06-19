@@ -50,3 +50,25 @@ td { padding: 12px 8px; border-bottom: 1px solid var(--border); font-size: 13px;
 .btn-danger:hover { opacity: .85; }
 .btn-success { background: var(--safe); color: white; }
 .empty { text-align: center; padding: 48px; color: var(--text2); }
+.field-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text2);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.select-input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface2);
+  color: var(--text);
+}
+.status-note {
+  margin-bottom: 12px;
+  color: var(--text2);
+  font-size: 13px;
+}

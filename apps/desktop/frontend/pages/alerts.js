@@ -2,7 +2,12 @@ async function renderAlerts() {
   const alerts = await invoke('get_alerts');
   const rows = alerts.length
     ? alerts.map(a => {
-        const severityClass = a.severity === 'CRITICAL' || a.severity === 'HIGH' ? 'badge-high' : a.severity === 'MEDIUM' ? 'badge-medium' : 'badge-low';
+        const severityClass = a.severity === 'CRITICAL' || a.severity === 'HIGH'
+          ? 'badge-high'
+          : a.severity === 'MEDIUM'
+            ? 'badge-medium'
+            : 'badge-low';
+
         return `<tr>
           <td><span class="badge ${severityClass}">${a.severity}</span></td>
           <td>${a.title}</td>
@@ -28,4 +33,5 @@ async function renderAlerts() {
   `;
 
   document.getElementById('btn-refresh')?.addEventListener('click', renderAlerts);
+  window.appState.scheduleRefresh('alerts', renderAlerts);
 }

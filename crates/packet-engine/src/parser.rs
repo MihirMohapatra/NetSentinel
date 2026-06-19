@@ -69,11 +69,25 @@ impl PacketParser {
             packet_size: data.len(),
             process_id: None,
             process_name: None,
+            dns_query_domain: None,
+            dns_response_ips: Vec::new(),
+            dns_response_code: None,
         };
 
         match protocol {
             Protocol::TCP => self.tcp_parser.enrich(&mut event, payload),
-            Protocol::UDP => self.udp_parser.enrich(&mut event, payload),
+            Protocol::UDP => {
+                self.udp_parser.enrich(&mut event, payload);
+                if src_port == 53 || dst_port == 53 {
+                    if let Some(dns) = DnsParser::parse(payload) {
+                        if !dns.query_domain.is_empty() {
+                            event.dns_query_domain = Some(dns.query_domain);
+                        }
+                        event.dns_response_ips = dns.response_ips;
+                        event.dns_response_code = Some(dns.response_code);
+                    }
+                }
+            }
             _ => {}
         }
 

@@ -23,4 +23,6 @@ async function renderNetwork() {
       </table>
     </div>
   `;
+
+  window.appState.scheduleRefresh('network', renderNetwork);
 }

@@ -15,6 +15,9 @@ pub struct NetworkEvent {
     pub packet_size: usize,
     pub process_id: Option<u32>,
     pub process_name: Option<String>,
+    pub dns_query_domain: Option<String>,
+    pub dns_response_ips: Vec<IpAddr>,
+    pub dns_response_code: Option<u16>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]

@@ -15,6 +15,8 @@ pub fn run() {
         .manage(app_state)
         .invoke_handler(tauri::generate_handler![
             commands::get_status,
+            commands::list_interfaces,
+            commands::select_interface,
             commands::get_alerts,
             commands::get_connections,
             commands::get_dns_history,
